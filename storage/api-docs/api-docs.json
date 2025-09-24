@@ -1,0 +1,325 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "AI IDS Project API",
+        "description": "API documentation for AI IDS Project",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "Local server"
+        }
+    ],
+    "paths": {
+        "/alerts": {
+            "get": {
+                "tags": [
+                    "Alerts"
+                ],
+                "summary": "List alerts",
+                "description": "Display a paginated list of alerts.",
+                "operationId": "517a7a87a883a188ffc66d194eb4b83a",
+                "responses": {
+                    "200": {
+                        "description": "List of alerts returned successfully"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Alerts"
+                ],
+                "summary": "Create a new alert",
+                "description": "Store a newly created alert.",
+                "operationId": "3adfe0b4b0711208446c95109cb63057",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "network_log_id",
+                                    "ml_model_id",
+                                    "attack_type",
+                                    "severity"
+                                ],
+                                "properties": {
+                                    "network_log_id": {
+                                        "type": "integer"
+                                    },
+                                    "ml_model_id": {
+                                        "type": "integer"
+                                    },
+                                    "attack_type": {
+                                        "type": "string"
+                                    },
+                                    "severity": {
+                                        "type": "string",
+                                        "enum": [
+                                            "low",
+                                            "medium",
+                                            "high",
+                                            "critical"
+                                        ]
+                                    },
+                                    "source_ip": {
+                                        "type": "string",
+                                        "format": "ipv4"
+                                    },
+                                    "destination_ip": {
+                                        "type": "string",
+                                        "format": "ipv4"
+                                    },
+                                    "confidence_score": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "302": {
+                        "description": "Alert created successfully"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/alerts/create": {
+            "get": {
+                "tags": [
+                    "Alerts"
+                ],
+                "summary": "Show create alert form",
+                "description": "Show the form to create a new alert.",
+                "operationId": "1ceb2efa86f5148b67f1fb4e607f243e",
+                "responses": {
+                    "200": {
+                        "description": "Form data for creating an alert"
+                    }
+                }
+            }
+        },
+        "/alerts/{id}": {
+            "get": {
+                "tags": [
+                    "Alerts"
+                ],
+                "summary": "Show alert details",
+                "description": "Display a specific alert.",
+                "operationId": "6b0af8639796a4977541ad512ae92da1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Alert details returned"
+                    },
+                    "404": {
+                        "description": "Alert not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Alerts"
+                ],
+                "summary": "Delete an alert",
+                "description": "Delete an alert.",
+                "operationId": "86cbb74b4dfcee5520381721a85833e6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Alert deleted successfully"
+                    },
+                    "404": {
+                        "description": "Alert not found"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Display registration form",
+                "description": "Display the registration view.",
+                "operationId": "711394cf638654593b284d884e4c5be4",
+                "responses": {
+                    "200": {
+                        "description": "Registration view rendered successfully"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register a new user",
+                "description": "Handle an incoming registration request.",
+                "operationId": "573de1fed352c1205a32c4d1b9877375",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "302": {
+                        "description": "User registered and redirected to home"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/email/verify": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Verify authenticated user's email",
+                "description": "Mark the authenticated user's email address as verified.",
+                "operationId": "180c76bdc4f4dfce3081343fe8d8133e",
+                "responses": {
+                    "302": {
+                        "description": "User email verified and redirected to home"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/dashboard": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get dashboard statistics and recent alerts",
+                "description": "Display the main dashboard with statistics and recent alerts.",
+                "operationId": "a92dff3ea055c0a594f425e852840a68",
+                "responses": {
+                    "200": {
+                        "description": "Dashboard data returned successfully"
+                    }
+                }
+            }
+        },
+        "/ml-models": {
+            "get": {
+                "tags": [
+                    "MLModels"
+                ],
+                "summary": "List all ML Models",
+                "description": "Display a listing of ML Models.",
+                "operationId": "46b2f88c550a222a6bc8c4d7fc586662",
+                "responses": {
+                    "200": {
+                        "description": "ML Models retrieved successfully"
+                    }
+                }
+            }
+        },
+        "/network-logs": {
+            "get": {
+                "tags": [
+                    "NetworkLogs"
+                ],
+                "summary": "List all network logs",
+                "description": "Display a listing of network logs.",
+                "operationId": "4e6030e82258585eaeb004db3fffcd98",
+                "responses": {
+                    "200": {
+                        "description": "Network logs retrieved successfully"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Alerts",
+            "description": "Alerts"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Dashboard",
+            "description": "Dashboard"
+        },
+        {
+            "name": "MLModels",
+            "description": "MLModels"
+        },
+        {
+            "name": "NetworkLogs",
+            "description": "NetworkLogs"
+        }
+    ]
+}
